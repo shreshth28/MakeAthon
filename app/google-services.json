@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "293344124507",
+    "firebase_url": "https://makeathon-d5476.firebaseio.com",
+    "project_id": "makeathon-d5476",
+    "storage_bucket": "makeathon-d5476.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293344124507:android:9f0cd86cfff9f581",
+        "android_client_info": {
+          "package_name": "com.example.shreshth.makeathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293344124507-nij2onpt0upmvde7jbcbefntmcs3ace5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shreshth.makeathon",
+            "certificate_hash": "f88c2538bd0e5042e3745d9d9fd3622096231298"
+          }
+        },
+        {
+          "client_id": "293344124507-v14qf0t1q18uoil4lvvkop15afv1gpcl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA13nCm2lFFXlO9jr2F0WrzESLMFetRXJY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293344124507-v14qf0t1q18uoil4lvvkop15afv1gpcl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
