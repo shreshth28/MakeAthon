@@ -3,8 +3,10 @@ package com.example.shreshth.makeathon;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
@@ -23,6 +26,11 @@ import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
     public static final int RequestPermissionCode = 1;
     MediaPlayer mediaPlayer ;
+    private StorageReference mStorageRef;
 
 
 
@@ -56,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         buttonStop.setEnabled(false);
         buttonPlayLastRecordAudio.setEnabled(false);
         buttonStopPlayingRecording.setEnabled(false);
-
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         random = new Random();
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this, "Recording Completed",
                         Toast.LENGTH_LONG).show();
+                uploadAudio();
             }
         });
 
@@ -153,6 +163,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void uploadAudio() {
+        Uri file = Uri.fromFile(new File(AudioSavePathInDevice));
+        StorageReference riversRef = mStorageRef.child("Audio").child(String.valueOf(Math.random()*10000));
+
+        riversRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                        Toast.makeText(MainActivity.this, "Done Uploading", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
     }
 
     private void stopRepeatingTask() {
@@ -223,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             double amp=mediaRecorder.getMaxAmplitude();
             if(amp!=0) {
-                Toast.makeText(MainActivity.this,"Sound Level:"+String.valueOf(amp), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Sound Level :"+String.valueOf(20*Math.log10(amp))+" dB", Toast.LENGTH_SHORT).show();
             }
             circularImageView.setBorderWidth(100);
             mHandler.postDelayed(mPollTask, mInterval);
